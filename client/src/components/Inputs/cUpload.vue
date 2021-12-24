@@ -18,9 +18,7 @@ export default {
 			"default": ""
 		}
 	},
-	"emits": [
-		"update:modelValue"
-	],
+	"emits": ["update:modelValue"],
 	setup ( props, context ) {
 		const fileInput = ref( null );
 
@@ -38,7 +36,7 @@ export default {
 					};
 				}
 			} catch ( error ) {
-				console.log( error );
+				console.error( error );
 			}
 		};
 

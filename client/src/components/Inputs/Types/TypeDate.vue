@@ -1,11 +1,9 @@
 <template lang="pug">
-input(type="text" :value="formatDate(value)" disabled)
-//- icon(name="date" @click="datePicker()")
-//- input(type="date" :valeue="toHuman(value)" @input="$emit('update:modelValue', toUnix($event.target.value))")
+input(type="date" :value="dateFormatted(value)" @input="updateModelValue($event.target.value)")
 </template>
 
+
 <script>
-import { formatDate } from "~/core/utils";
 export default {
 	"props": {
 		"value": {
@@ -13,18 +11,14 @@ export default {
 			"default": () => Date.now()
 		}
 	},
-	"emits": [
-		"update:modelValue"
-	],
-	setup () {
-		const toHuman = value => new Date( value ).toISOString().split( "T" )[0];
-		const toUnix = value => new Date( value ).getTime() / 1000;
-		const datePicker = () => console.log( "date" );
+	"emits": ["updateValue"],
+	setup ( props, context ) {
+		const dateFormatted = value => new Date( value ).toISOString().split( "T" )[0];
+		const toUnix = value => new Date( value ).getTime();
+		const updateModelValue = value => context.emit( "updateValue", toUnix( value ) );
 		return {
-			toHuman,
-			toUnix,
-			formatDate,
-			datePicker
+			dateFormatted,
+			updateModelValue
 		};
 	}
 };

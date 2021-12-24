@@ -1,5 +1,7 @@
 import { createWebHistory, createRouter } from "vue-router";
 import { appState } from "~/store/appState.js";
+import { restoreSession } from "~/core/restore.js"; // temp
+
 
 // layers
 const ErrorLayer = () => import( "~/layers/ErrorLayer.vue" );
@@ -11,6 +13,8 @@ const AuthSignUp = () => import( "~/pages/Auth/AuthSignUp.vue" );
 const AuthSignIn = () => import( "~/pages/Auth/AuthSignIn.vue" );
 const AuthVerification = () => import( "~/pages/Auth/AuthVerification.vue" );
 const AuthResetPassword = () => import( "~/pages/Auth/AuthResetPassword.vue" );
+
+const BusinessOnBoarding = () => import( "~/pages/Onboarding/BusinessOnboarding.vue" );
 
 const _DashboardEntry = () => import( "~/pages/Dashboard/_DashboardEntry.vue" );
 
@@ -46,6 +50,8 @@ const _RisksEntry = () => import( "~/pages/Risks/_RisksEntry.vue" );
 const _SettingsEntry = () => import( "~/pages/Settings/_SettingsEntry.vue" );
 const SettingsGeneral = () => import( "~/pages/Settings/SettingsGeneral.vue" );
 const SettingsUsers = () => import( "~/pages/Settings/SettingsUsers.vue" );
+const SettingsUsersDirectory = () => import( "~/pages/Settings/SettingsUsersDirectory.vue" );
+const SettingsUsersDisabled = () => import( "~/pages/Settings/SettingsUsersDisabled.vue" );
 const SettingsRoles = () => import( "~/pages/Settings/SettingsRoles.vue" );
 const SettingsSecurity = () => import( "~/pages/Settings/SettingsSecurity.vue" );
 const SettingsSubscriptions = () => import( "~/pages/Settings/SettingsSubscriptions.vue" );
@@ -63,13 +69,16 @@ const routes = [
 		"path": "/error",
 		"name": "ErrorLayer",
 		"props": true,
-		"component": ErrorLayer
+		"component": ErrorLayer,
+		"meta": { "title": "Error" }
 	}, {
 		"path": "/",
 		"component": AuthenticatedLayer,
-		"beforeEnter": ( to, from, next ) => {
-			if ( appState.value.userId ) next();
-			else next({ "name": "AuthSignIn" });
+		"beforeEnter": async ( to, from, next ) => {
+			if ( appState.value.userId ) {
+				await restoreSession();
+				next();
+			} else next({ "name": "AuthSignIn" });
 		},
 		"children": [
 			...devRoutes,
@@ -83,14 +92,20 @@ const routes = [
 				"path": "tasks",
 				"component": _TasksEntry,
 				"meta": { "title": "Tasks" },
-				"children": [
-					{
-						"path": "",
-						"name": "TasksOverview",
-						"component": TasksOverview,
-						"meta": { "title": "Tasks" }
-					}
-				]
+				"children": [{
+					"path": "",
+					"name": "TasksOverview",
+					"component": TasksOverview,
+					"meta": { "title": "Tasks" }
+				}]
+			},
+			{
+				"path": "/business/onboarding",
+				"component": BusinessOnBoarding,
+				"meta": {
+					"title": "BusinessOnBoarding",
+					"sidebar": false
+				}
 			},
 			{
 				"path": "projects",
@@ -249,8 +264,19 @@ const routes = [
 					{
 						"path": "users",
 						"meta": { "title": "Settings - Users" },
-						"name": "SettingsUsers",
-						"component": SettingsUsers
+						"component": SettingsUsers,
+						"children": [
+							{
+								"path": "",
+								"name": "SettingsUsersDirectory",
+								"component": SettingsUsersDirectory
+							}, {
+								"path": "disabled",
+								"name": "SettingsUsersDisabled",
+								"component": SettingsUsersDisabled,
+								"meta": { "title": "Settings - Disabled Users" }
+							}
+						]
 					},
 					{
 						"path": "roles",
@@ -290,35 +316,33 @@ const routes = [
 	}, {
 		"path": "/",
 		"component": UnauthenticatedLayer,
-		"children": [
-			{
-				"path": "",
-				"component": _AuthEntry,
-				"children": [
-					{
-						"path": "sign-up",
-						"name": "AuthSignUp",
-						"component": AuthSignUp,
-						"meta": { "title": "Sign Up" }
-					}, {
-						"path": "sign-in",
-						"name": "AuthSignIn",
-						"component": AuthSignIn,
-						"meta": { "title": "Sign In" }
-					}, {
-						"path": "verification",
-						"name": "AuthVerification",
-						"component": AuthVerification,
-						"meta": { "title": "Verification" }
-					}, {
-						"path": "reset-password",
-						"name": "AuthResetPassword",
-						"component": AuthResetPassword,
-						"meta": { "title": "Reset Password" }
-					}
-				]
-			}
-		]
+		"children": [{
+			"path": "",
+			"component": _AuthEntry,
+			"children": [
+				{
+					"path": "sign-up",
+					"name": "AuthSignUp",
+					"component": AuthSignUp,
+					"meta": { "title": "Sign Up" }
+				}, {
+					"path": "sign-in",
+					"name": "AuthSignIn",
+					"component": AuthSignIn,
+					"meta": { "title": "Sign In" }
+				}, {
+					"path": "verification",
+					"name": "AuthVerification",
+					"component": AuthVerification,
+					"meta": { "title": "Verification" }
+				}, {
+					"path": "reset-password",
+					"name": "AuthResetPassword",
+					"component": AuthResetPassword,
+					"meta": { "title": "Reset Password" }
+				}
+			]
+		}]
 	}, {
 		"path": "/:pathMatch(.*)*",
 		"redirect": {

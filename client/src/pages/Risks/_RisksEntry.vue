@@ -62,19 +62,19 @@ export default {
 			{
 				"title": "Policy",
 				"key": "name",
-				"type": "policy"
+				"cell": "CellPolicy"
 			}, {
 				"title": "Status",
 				"key": "status",
-				"type": "status"
+				"cell": "CellStatus"
 			}, {
 				"title": "Last Modiied",
-				"key": "updated_at",
-				"type": "date"
+				"key": "updatedAt",
+				"cell": "CellDate"
 			}, {
 				"title": "Date Created",
-				"key": "created_at",
-				"type": "date"
+				"key": "createdAt",
+				"cell": "CellDate"
 			}
 		];
 
@@ -82,60 +82,56 @@ export default {
 			{
 				"title": "Policy",
 				"key": "completed",
-				"type": "checkbox"
+				"cell": "CellCheckbox"
 			},
 			{
 				"title": "",
 				"key": "name",
-				"type": "policy"
+				"cell": "CellPolicy"
 			},
 			{
 				"title": "Status",
 				"key": "status",
-				"type": "status"
+				"cell": "CellStatus"
 			},
 			{
 				"title": "Last Modiied",
-				"key": "updated_at",
-				"type": "date"
+				"key": "updatedAt",
+				"cell": "CellDate"
 			},
 			{
 				"title": "Date Created",
-				"key": "created_at",
-				"type": "date"
+				"key": "createdAt",
+				"cell": "CellDate"
 			}
 		];
 
-		const policies = [
-			{
-				"completed": true,
-				"name": {
-					"id": "1",
-					"title": "Policy"
-				},
-				"status": "draft",
-				"updated_at": new Date().toString(),
-				"created_at": new Date().toString()
-			}
-		];
+		const policies = [{
+			"completed": true,
+			"name": {
+				"id": "1",
+				"title": "Policy"
+			},
+			"status": "draft",
+			"updatedAt": Date.now(),
+			"createdAt": Date.now()
+		}];
 
-		const documents = [
-			{
-				"name": {
-					"id": "1",
-					"title": "Policy"
-				},
-				"status": "draft",
-				"updated_at": new Date().toString(),
-				"created_at": new Date().toString()
-			}
-		];
+		const documents = [{
+			"name": {
+				"id": "1",
+				"title": "Policy"
+			},
+			"status": "draft",
+			"updatedAt": Date.now(),
+			"createdAt": Date.now()
+		}];
 
 		const showEditRiskModal = () => {
 			isShowEditRiskModal.value = true;
 		};
 
-		const updateVisibleModal = ( value ) => {
+		const updateVisibleModal = value => {
 			isShowEditRiskModal.value = value;
 		};
 

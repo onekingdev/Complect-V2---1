@@ -1,19 +1,19 @@
 service: "complect-api"
-
+useDotenv: true
 provider:
   name: "aws"
   runtime: "nodejs14.x"
   memorySize: 128
   timeout: 3
   region: "us-east-1"
-  profile: "serverless-framework"
   lambdaHashingVersion: 20201221
+  stage: ${env:API_STAGE}
   apiGateway:
     shouldStartNameWithService: true
-
-  stage: "dev"
   environment: 
     NODE_ENV: "dev"
+    DB_URI: ${env:DB_URI}
+    DB_NAME: ${env:DB_NAME}
 
 functions:
   - "${file(endpoints/data.yml)}"
@@ -36,20 +36,20 @@ plugins:
   - "serverless-offline"
   - "serverless-iam-roles-per-function"
   - "serverless-prune-plugin"
-  # - "serverless-domain-manager"
+  - "serverless-domain-manager"
 
 
 custom:
   serverless-offline:
     httpPort: 6099
     host: 0.0.0.0
-  # customDomain:
-  #   domainName: "api2.complect.com"
-  #   basePath: ""
-  #   stage:  ${self:provider.stage}
-  #   certificateName: "*.complect.com"
-  #   endpointType: "edge"
-  #   createRoute53Record: true
+  customDomain:
+    domainName: "api2.complect.com"
+    basePath: ${self:provider.stage}
+    stage:  ${self:provider.stage}
+    certificateName: "*.complect.com"
+    endpointType: "edge"
+    createRoute53Record: true
   prune:
     automatic: true
     number: 3

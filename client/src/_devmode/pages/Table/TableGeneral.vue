@@ -13,22 +13,25 @@ c-card(title="Table" type="flex-column")
 <script>
 import { ref, onMounted } from "vue";
 import cDropdown from "~/components/Inputs/cDropdown.vue";
-import cToggle from "~/components/Inputs/cToggle.vue"
 import { randomMongoId, randomBool, randomNumber, randomElement } from "~/_devmode/generator/components/atoms/utils.js";
 import { randomTitles } from "~/_devmode/generator/components/molecules/randomTexts.js";
 import { randomUsers } from "~/_devmode/generator/components/organisms/randomUsers.js";
-
 import { randomDatesInRange } from "~/_devmode/generator/components/molecules/randomDate.js";
 
 
 export default {
-	components: { cDropdown, cToggle },
+	components: { cDropdown },
 	setup() {
 		const documents = ref([])
 
 		const visibleColumns = ref([])
 		const toggleColumnVisibility = (key, state) => visibleColumns.value[key] = state
 		
+		const handleClickEdit = id => console.debug( "Edit", id );
+		const handleClickDuplicate = id => console.debug( "Duplicate", id );
+		const handleClickDelete = id => console.debug( "Delete", id );
+
+
 		const generateDocuments = () => {
 			documents.value = []
 			for ( let i = 1; i < randomNumber(10,20); i++ ) {
@@ -42,25 +45,23 @@ export default {
 					"assignee": [],
 					"collaborators": randomUsers({q:[0,7]}),
 					"tasks": [],
-					"fixed_budget": Math.round( randomNumber( 100, 20000 ) / 100 ) * 100,
+					"fixedBudget": Math.round( randomNumber( 100, 20000 ) / 100 ) * 100,
 					"created": startDate + randomNumber(-1e5,-1e3),
 					"modified": startDate + randomNumber(-1e2,0),
 					"status": randomElement(["draft", "inprogress", "complete"]),
-					"starts_at": startDate,
-					"ends_at": startDate + randomNumber(1e5,1e10),
+					"startsAt": startDate,
+					"endsAt": startDate + randomNumber(1e5,1e10)
 				});
 			}
 		}
 
 		onMounted(() => generateDocuments())
 
-		
-
 		const columns = [
 			{
 				"title": "Name",
 				"key": "title",
-				"type": "title",
+				"cell": "CellTitle",
 				"meta": {
 					"link": "ProjectDetail",
 					"checkbox": "completed" 
@@ -68,34 +69,45 @@ export default {
 			}, {
 				"title": "Collaborators",
 				"key": "collaborators",
-				"type": "collaborators",
+				"cell": "CellCollaborators"
 			}, {
 				"title": "Tasks Left",
 				"key": "tasks",
-				"type": "tasks",
+				"cell": "CellTasks",
 				"align": "right"
 			}, {
 				"title": "Cost",
-				"key": "fixed_budget",
-				"type": "price",
+				"key": "fixedBudget",
+				"cell": "CellPrice",
 				"align": "right"
 			}, {
 				"title": "Status",
 				"key": "status",
-				"type": "status",
+				"cell": "CellStatus",
 				"align": "right"
 			}, {
 				"title": "Start Date",
-				"key": "starts_at",
-				"type": "date",
+				"key": "startsAt",
+				"cell": "CellDate",
 				"align": "right"
 			}, {
 				"title": "End Date",
-				"key": "ends_at",
-				"type": "date",
+				"key": "endsAt",
+				"cell": "CellDate",
 				"align": "right",
 				"meta": {
 					"overdueWarning": true
+				}
+			},
+			{
+				"unsortable": true,
+				"cell": "CellDropdown",
+				"meta": {
+					"actions": [
+						{ "title": "Edit", "action": handleClickEdit },
+						{ "title": "Duplicate", "action": handleClickDuplicate },
+						{ "title": "Delete", "action": handleClickDelete }
+					]
 				}
 			}
 		];

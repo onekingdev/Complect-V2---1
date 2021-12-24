@@ -13,8 +13,8 @@ div.grid-6
 			template(#content)
 				h3.heading Review Period
 				div.grid-6
-					c-field.col-3(label="Start Date" type="date")
-					c-field.col-3(label="Start Date" type="date")
+					c-field.col-3(label="Start Date" type="date" v-model="tempData.startsAt")
+					c-field.col-3(label="Start Date" type="date" v-model="tempData.endsAt")
 				hr
 				h3.heading Material Business Changes
 				p.paragraph List any changes to your business processes, key vendors, and/or key employees during the Review Period
@@ -51,20 +51,22 @@ import cDropdown from "~/components/Inputs/cDropdown.vue";
 export default {
 	"components": { cDropdown },
 	setup () {
-		const categories = reactive([
-			{
-				"id": "_axxxx",
-				"name": "Category One"
-			}
-		]);
+		const categories = reactive([{
+			"id": "_axxxx",
+			"name": "Category One"
+		}]);
 
 		const newRegulatory = {
 			"change": "",
 			"response": ""
 		};
 
-		const regulatories = reactive([
-		]);
+		const tempData = reactive({
+			"startsAt": Date.now(),
+			"endsAt": Date.now()
+		});
+
+		const regulatories = reactive([]);
 
 		const addRegulatoryChange = () => {
 			regulatories.push( newRegulatory );
@@ -76,8 +78,7 @@ export default {
 			"department": ""
 		};
 
-		const employees = reactive([
-		]);
+		const employees = reactive([]);
 		const addNewEmployee = () => {
 			employees.push( newEmployee );
 		};
@@ -86,6 +87,7 @@ export default {
 			categories,
 			regulatories,
 			employees,
+			tempData,
 			addRegulatoryChange,
 			addNewEmployee
 		};

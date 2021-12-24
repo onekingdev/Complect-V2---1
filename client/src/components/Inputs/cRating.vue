@@ -25,14 +25,12 @@ export default {
 		},
 		"readonly": Boolean
 	},
-	"emits": [
-		"update:modelValue"
-	],
+	"emits": ["update:modelValue"],
 	setup ( props, context ) {
 		const hoveredStar = ref( null );
 		const previewRating = rating => hoveredStar.value = rating;
 
-		const setRating = ( rating ) => {
+		const setRating = rating => {
 			if ( props.readonly ) return;
 			if ( rating === 1 && props.modelValue === 1 ) context.emit( "update:modelValue", 0 );
 			else {

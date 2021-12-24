@@ -3,7 +3,10 @@ const devInputsEntry = () => import( "~/_devmode/pages/Inputs/InputsEntry.vue" )
 const devInputsButtons = () => import( "~/_devmode/pages/Inputs/InputsButtons.vue" );
 const devInputsFields = () => import( "~/_devmode/pages/Inputs/InputsFields.vue" );
 const devInputsSelect = () => import( "~/_devmode/pages/Inputs/InputsSelect.vue" );
+const devInputsDropdown = () => import( "~/_devmode/pages/Inputs/InputsDropdown.vue" );
 const devInputsCheckbox = () => import( "~/_devmode/pages/Inputs/InputsCheckbox.vue" );
+const devInputsRadio = () => import( "~/_devmode/pages/Inputs/InputsRadio.vue" );
+const devInputsDropzone = () => import( "~/_devmode/pages/Inputs/InputsDropzone.vue" );
 const devInputsRating = () => import( "~/_devmode/pages/Inputs/InputsRating.vue" );
 const devInputsExtra = () => import( "~/_devmode/pages/Inputs/InputsExtra.vue" );
 
@@ -42,10 +45,25 @@ const devRoutes = [{
 		name: "devInputsSelect",
 		component: devInputsSelect
 	}, {
+		path: "dropdown",
+		meta: { title: "Dropdown Component" },
+		name: "devInputsDropdown",
+		component: devInputsDropdown
+	}, {
 		path: "checkbox",
 		meta: { title: "Checkbox Component" },
 		name: "devInputsCheckbox",
 		component: devInputsCheckbox
+	}, {
+		path: "radio",
+		meta: { title: "Radio Component" },
+		name: "devInputsRadio",
+		component: devInputsRadio
+	}, {
+		path: "dropzone",
+		meta: { title: "Dropzone Component" },
+		name: "devInputsDropzone",
+		component: devInputsDropzone
 	}, {
 		path: "rating",
 		meta: { title: "Rating Component" },

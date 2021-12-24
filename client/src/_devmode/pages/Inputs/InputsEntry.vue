@@ -20,8 +20,17 @@ export default {
 			name: "devInputsSelect",
 			title: "Select"
 		}, {
+			name: "devInputsDropdown",
+			title: "Dropdown"
+		}, {
 			name: "devInputsCheckbox",
 			title: "Checkbox"
+		}, {
+			name: "devInputsRadio",
+			title: "Radio"
+		}, {
+			name: "devInputsDropzone",
+			title: "Dropzone"
 		}, {
 			name: "devInputsRating",
 			title: "Rating"

@@ -1,18 +1,8 @@
-FROM node:14.18
-RUN apt-get update
+FROM node:14.8-alpine3.11
+RUN apk update && apk upgrade
 LABEL maintainer="hello@gololobov.dev"
 
-WORKDIR /home
-
-# Install AWS
-RUN apt-get install -yy less
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-RUN unzip awscliv2.zip
-RUN ./aws/install
-
-# Install Serverless
-RUN npm i -g serverless
-
-# Install Dependecies
+WORKDIR /home/app
+RUN npm i -g serverless@2.68.0
 COPY package*.json ./
-RUN npm i
+RUN npm ci

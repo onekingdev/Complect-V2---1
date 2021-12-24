@@ -14,85 +14,83 @@ export default {
 			{
 				"title": "Name",
 				"key": "title",
-				"type": "title",
+				"cell": "CellTitle",
 				"meta": { "link": "ProjectDetail" }
 			},
 			{
 				"title": "Collaborators",
 				"key": "collaborators",
-				"type": "collaborators"
+				"cell": "CellCollaborators"
 			},
 			{
 				"title": "Tasks Left",
 				"key": "tasks",
-				"type": "tasks",
+				"cell": "CellTasks",
 				"align": "right"
 			},
 			{
 				"title": "Cost",
-				"key": "fixed_budget",
-				"type": "price",
+				"key": "fixedBudget",
+				"cell": "CellPrice",
 				"align": "right"
 			},
 			{
 				"title": "Status",
 				"key": "status",
-				"type": "status",
+				"cell": "CellStatus",
 				"align": "right"
 			},
 			{
 				"title": "Start Date",
-				"key": "starts_at",
-				"type": "date",
+				"key": "startsAt",
+				"cell": "CellDate",
 				"align": "right"
 			},
 			{
 				"title": "End Date",
-				"key": "ends_at",
-				"type": "date",
+				"key": "endsAt",
+				"cell": "CellDate",
 				"align": "right",
 				"meta": { "overdueWarning": true }
 			}
 		];
 
-		const filters = [
-			{
-				"title": "Filter by:",
-				"field": "status",
-				"keys": [
-					{
-						"title": "All",
-						"key": ""
-					},
-					{
-						"title": "Not Started",
-						"key": "not_started"
-					},
-					{
-						"title": "Draft",
-						"key": "draft"
-					},
-					{
-						"title": "In Progress",
-						"key": "inprogress"
-					},
-					{
-						"title": "Pending",
-						"key": "pending"
-					},
-					{
-						"title": "Complete",
-						"key": "complete"
-					},
-					{
-						"title": "Overdue",
-						"key": "overdue"
-					}
-				]
-			}
-		];
+		const filters = [{
+			"title": "Filter by:",
+			"field": "status",
+			"keys": [
+				{
+					"title": "All",
+					"key": ""
+				},
+				{
+					"title": "Not Started",
+					"key": "notStarted"
+				},
+				{
+					"title": "Draft",
+					"key": "draft"
+				},
+				{
+					"title": "In Progress",
+					"key": "inprogress"
+				},
+				{
+					"title": "Pending",
+					"key": "pending"
+				},
+				{
+					"title": "Complete",
+					"key": "complete"
+				},
+				{
+					"title": "Overdue",
+					"key": "overdue"
+				}
+			]
+		}];
 
-		onMounted( async () => await readDocuments() );
+		onMounted( () => readDocuments() );
 		onUnmounted( () => clearStore() );
 
 		return {

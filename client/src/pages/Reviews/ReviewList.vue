@@ -3,10 +3,9 @@ documents-container(title="Internal Reviews")
 	template(#controls)
 		c-button-modal(title="New Review" modalTitle="New Review" type="primary")
 			template(#content)
-				//- c-field.col-full(label="Template" type="singleselect" :modelValue="templateOptions" @update:modelValue="updateTemplateReview" v-model="newReview.template_id")
 				c-field.col-full(label="Review Name" v-model="newReview.title" required)
-				c-field.col-3(label="Start Date" type="date" v-model="newReview.starts_at" required)
-				c-field.col-3(label="End Date" type="date" v-model="newReview.ends_at" required)
+				c-field.col-3(label="Start Date" type="date" v-model="newReview.startsAt" required)
+				c-field.col-3(label="End Date" type="date" v-model="newReview.endsAt" required)
 			template(#footer)
 				c-button(title="Create" type="primary" @click="createNewReview()")
 	template(#content)
@@ -18,82 +17,93 @@ documents-container(title="Internal Reviews")
 			a(href="/") 12/07/2021
 		c-table(v-bind="{columns, documents}" :showSortIcon="false")
 </template>
+
+
 <script>
 import { reactive } from "vue";
 import cBanner from "~/components/Misc/cBanner.vue";
 export default {
 	"components": { cBanner },
 	setup () {
+		const handleClickEdit = id => console.debug( "Edit", id );
+		const handleClickDuplicate = id => console.debug( "Duplicate", id );
+		const handleClickDelete = id => console.debug( "Delete", id );
+
 		const newReview = reactive({
-			"template_id": "",
+			"templateId": "",
 			"title": "",
-			"starts_at": "",
-			"ends_at": ""
+			"startsAt": "",
+			"endsAt": ""
 		});
+
 		const columns = [
 			{
 				"title": "Name",
 				"key": "name",
-				"type": "title",
+				"cell": "CellTitle",
 				"meta": { "link": "ReviewDetail" }
 			},
 			{
 				"title": "Progress",
 				"key": "progress",
-				"type": "progress"
+				"cell": "CellProgress"
 			},
 			{
 				"title": "Finding",
 				"key": "finding",
-				"type": "title"
+				"cell": "CellTitle"
 			},
 			{
 				"title": "Last Modified",
-				"key": "last_modified",
-				"type": "date"
+				"key": "lastModified",
+				"cell": "CellDate"
 			},
 			{
 				"title": "Date Created",
-				"key": "date_created",
-				"type": "date"
+				"key": "dateCreated",
+				"cell": "CellDate"
 			},
 			{
 				"title": "Review Period",
-				"key": "review_period",
-				"type": "date"
+				"key": "reviewPeriod",
+				"cell": "CellDate"
 			},
 			{
 				"title": "End Date",
-				"key": "end_date",
-				"type": "date"
-			}
-		];
-
-		const documents = [
+				"key": "endDate",
+				"cell": "CellDate"
+			},
 			{
-				"_id": "1",
-				"name": "Review",
-				"progress": {
-					"current": 1,
-					"max": 2
-				},
-				"finding": "1",
-				"last_modified": new Date().toString(),
-				"date_created": new Date().toString(),
-				"review_period": new Date().toString(),
-				"end_date": new Date().toString()
+				"unsortable": true,
+				"cell": "CellDropdown",
+				"meta": {
+					"actions": [
+						{ "title": "Edit", "action": handleClickEdit }, { "title": "Duplicate", "action": handleClickDuplicate }, { "title": "Delete", "action": handleClickDelete }
+					]
+				}
 			}
 		];
 
-		const filters = [
-		];
+		const documents = [{
+			"_id": "1",
+			"name": "Review",
+			"progress": {
+				"current": 1,
+				"max": 2
+			},
+			"finding": "1",
+			"lastModified": Date.now(),
+			"dateCreated": Date.now(),
+			"reviewPeriod": Date.now(),
+			"endDate": Date.now()
+		}];
+
+		const filters = [];
 		const viewPolicy = () => {
 			window.open( "https://www.sec.gov/exams" );
 		};
 
-		const createNewReview = () => {
-			console.log( newReview );
-		};
+		const createNewReview = () => {};
 
 		return {
 			columns,
@@ -106,6 +116,8 @@ export default {
 	}
 };
 </script>
+
+
 <style lang="stylus" scoped>
 .banner
 	margin-bottom: 1em

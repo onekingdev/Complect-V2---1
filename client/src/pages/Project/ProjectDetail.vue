@@ -38,16 +38,14 @@ export default {
 
 		const projectDetails = computed( () => ({
 			"title": document.value.title,
-			"starts_at": formatDate( document.value.starts_at ),
-			"ends_at": formatDate( document.value.ends_at ),
+			"startsAt": formatDate( document.value.startsAt ),
+			"endsAt": formatDate( document.value.endsAt ),
 			"description": document.value.description
 		}) );
 
 		const options = { "columns": { "title": "Name" } };
 
-		const documents = [
-			{ "title": "1" }
-		];
+		const documents = [{ "title": "1" }];
 
 
 		return {

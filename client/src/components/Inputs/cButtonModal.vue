@@ -53,8 +53,7 @@ export default {
 		"disabled": Boolean,
 		"modal": Boolean,
 		"fullwidth": Boolean,
-		"danger": Boolean,
-		"devmode": Boolean
+		"danger": Boolean
 	},
 	setup () {
 		const isModalVisible = ref( false );

@@ -6,7 +6,7 @@ teleport(to="#app-container")
 				.c-modal-header
 					.title {{title}}
 					c-button(type="icon" iconL="close" size="small" @click="closeModal()")
-				.c-modal-content(v-if="$slots.content" :class="{ block: displayBlock }")
+				.c-modal-content.grid-6(v-if="$slots.content")
 					slot(name="content")
 				.c-modal-footer(v-if="$slots.footer")
 					slot(name="left-footer")
@@ -26,18 +26,12 @@ export default {
 		},
 		"modelValue": Boolean,
 		"visible": Boolean,
-		"displayBlock": {
-			"type": Boolean,
-			"default": false
-		},
 		"largeWidth": {
 			"type": Boolean,
 			"default": false
 		}
 	},
-	"emits": [
-		"update:modelValue"
-	],
+	"emits": ["update:modelValue"],
 	setup ( props, context ) {
 		const isModalVisible = ref( true );
 		const modalWindow = ref( null );
@@ -104,8 +98,6 @@ export default {
 	grid-template-columns: repeat(6, auto)
 	align-items: flex-end
 	gap: 1em
-	&.block
-		display: block
 
 .c-modal-footer
 	display: flex

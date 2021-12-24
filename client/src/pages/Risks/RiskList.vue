@@ -24,28 +24,28 @@ export default {
 			{
 				"title": "Name",
 				"key": "name",
-				"type": "title",
+				"cell": "CellTitle",
 				"meta": { "link": "Risk" }
 			},
 			{
 				"title": "Impact",
 				"key": "impact",
-				"type": "title"
+				"cell": "CellTitle"
 			},
 			{
 				"title": "Likelihood",
 				"key": "likelihood",
-				"type": "title"
+				"cell": "CellTitle"
 			},
 			{
 				"title": "Risk Level",
-				"key": "risk_level",
-				"type": "label"
+				"key": "riskLevel",
+				"cell": "CellLabel"
 			},
 			{
 				"title": "Date Created",
-				"key": "created_at",
-				"type": "date"
+				"key": "createdAt",
+				"cell": "CellDate"
 			}
 		];
 
@@ -55,34 +55,34 @@ export default {
 				"name": "Risk",
 				"impact": "Low",
 				"likelihood": "Medium",
-				"risk_level": {
+				"riskLevel": {
 					"title": "Low",
 					"iconName": "triangle",
 					"type": "low"
 				},
-				"created_at": new Date().toString()
+				"createdAt": Date.now()
 			}, {
 				"_id": "2",
 				"name": "Risk",
 				"impact": "Low",
 				"likelihood": "Medium",
-				"risk_level": {
+				"riskLevel": {
 					"title": "Medium",
 					"iconName": "triangle",
 					"type": "medium"
 				},
-				"created_at": new Date().toString()
+				"createdAt": Date.now()
 			}, {
 				"_id": "3",
 				"name": "Risk",
 				"impact": "Low",
 				"likelihood": "Medium",
-				"risk_level": {
+				"riskLevel": {
 					"title": "High",
 					"iconName": "triangle",
 					"type": "high"
 				},
-				"created_at": new Date().toString()
+				"createdAt": Date.now()
 			}
 		];
 
@@ -90,7 +90,7 @@ export default {
 			isShowCreateRiskModal.value = !isShowCreateRiskModal.value;
 		};
 
-		const updateVisibleModal = ( value ) => {
+		const updateVisibleModal = value => {
 			isShowCreateRiskModal.value = value;
 		};
 

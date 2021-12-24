@@ -14,24 +14,23 @@ export default {
 			{
 				"title": "Name",
 				"key": "name",
-				"type": "title"
+				"cell": "CellTitle"
 			}, {
 				"title": "Assignee",
 				"key": "assignee",
-				"type": "title"
+				"cell": "CellTitle"
 			}, {
 				"title": "Start Date",
-				"key": "start_date",
-				"type": "date"
+				"key": "startDate",
+				"cell": "CellDate"
 			}, {
 				"title": "Due Date",
-				"key": "end_date",
-				"type": "date"
+				"key": "endDate",
+				"cell": "CellDate"
 			}
 		];
 
-		const documents = [
-		];
+		const documents = [];
 
 
 		return {

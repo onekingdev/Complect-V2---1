@@ -14,45 +14,38 @@ c-card
 
 <script>
 import { ref, computed, onMounted, onUnmounted, onBeforeUpdate } from "vue";
-import useAuth from "~/core/auth";
+import useAuth from "~/core/auth.js";
 export default {
 	setup () {
 		const { signIn } = useAuth();
 		const email = ref( "example@email.com" );
-		const inputs = ref([
-		]);
-		const numbers = ref([
-		]);
+		const inputs = ref([]);
+		const numbers = ref([]);
 		const code = computed( () => numbers.value.join( "" ) );
 
 		const submitCode = () => signIn();
-		const sendNewCode = () => numbers.value = [
-		];
+		const sendNewCode = () => numbers.value = [];
 
 		const keydownHandler = ( e, index ) => {
-			if ( e.keyCode === 8 && e.target.value === "" )
-				inputs.value[index - 1].focus();
+			if ( e.keyCode === 8 && e.target.value === "" ) inputs.value[index - 1].focus();
 		};
 
 		const inputHandler = ( e, index ) => {
-			const [
-				first
-			] = e.target.value;
+			const [first] = e.target.value;
 			e.target.value = first ?? "";
 			if ( code.value.length >= 6 ) inputs.value[index].blur();
-			if ( index !== inputs.value.length - 1 && first !== undefined )
-				inputs.value[index + 1].focus();
-				// inputs.value[index + 1].dispatchEvent( new Event( "input" ) );
+			if ( index !== inputs.value.length - 1 && first !== undefined ) inputs.value[index + 1].focus();
+			// inputs.value[index + 1].dispatchEvent( new Event( "input" ) );
 		};
 
 
 		// add Event Listners to all six number's inputs, for input & remove events
 		onMounted( () => {
 			inputs.value.forEach( ( input, index ) => {
-				input.addEventListener( "keydown", ( e ) => {
+				input.addEventListener( "keydown", e => {
 					keydownHandler( e, index );
 				});
-				input.addEventListener( "input", ( e ) => {
+				input.addEventListener( "input", e => {
 					inputHandler( e, index );
 				});
 			});
@@ -60,16 +53,14 @@ export default {
 
 		// remove Event Listners to all six number's inputs
 		onUnmounted( () => {
-			numbers.value = [
-			];
-			inputs.value.forEach( ( input ) => {
+			numbers.value = [];
+			inputs.value.forEach( input => {
 				input.removeEventListener( "keydown", keydownHandler );
 				input.removeEventListener( "input", inputHandler );
 			});
 		});
 
-		onBeforeUpdate( () => inputs.value = [
-		]);
+		onBeforeUpdate( () => inputs.value = []);
 
 		return {
 			email,

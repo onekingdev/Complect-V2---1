@@ -1,26 +1,28 @@
 <template lang="pug">
 .c-table
-	.filters(v-if="filters.length > 0")
+	.controls
 		c-field.search-input(v-if="searchable" type="search" iconL="search" placeholder="Search..." v-model="searchQuery")
-		c-dropdown(v-for="(filter, index) in filters" :key="index" :title="filter.title" :selected="selectedFilterTitle(activeFilters[filter.title])")
-			c-button(v-for="key in filter.keys" @click="activateFilter(filter.title, filter.field, key)" :title="key.title" type="transparent" fullwidth)
-		slot(name="controls")
+		.actions(v-if="filters.length > 0")
+			c-dropdown(v-for="(filter, index) in filters" :key="index" :title="filter.title" :selected="selectedFilterTitle(activeFilters[filter.title])")
+				c-button(v-for="key in filter.keys" @click="activateFilter(filter.title, filter.field, key)" :title="key.title" type="transparent" fullwidth)
+			slot(name="controls")
+		.actions
+			slot(name="actions")
 
 	table
 		colgroup
-			col(v-for="(column, index) in columns" :class="[column.type]" :key="index")
+			col(v-for="(column, index) in columns" :class="[column.cell]" :key="index")
 		thead
 			tr
 				th(v-for="(column, index) in columns" :key="index")
 					.cell.column-title(:class="[column.align]")
-						.title {{ column.title }}
-						c-button(v-if="showSortIcon" type="icon" iconR="sort" @click="sortDocuments(column.key)")
+						.title(v-if="column.title") {{ column.title }}
+						c-button(v-if="!column.unsortable" type="icon" iconR="sort" @click="sortDocuments(column.key)")
 		tbody(v-if="filteredDocuments.length")
 			tr(v-for="document in filteredDocuments" :key="document._id")
 				td(v-for="(column, index) in columns" :key="index")
 					component.cell(
-						v-if="document[column.key]"
-						:is="column.type"
+						:is="getTableCell(column.cell)"
 						:class="[column.align]"
 						:meta="column.meta"
 						:id="document._id"
@@ -33,21 +35,8 @@
 <script>
 import { ref, computed, defineAsyncComponent } from "vue";
 import { sortArrayByKey } from "~/core/utils.js";
-import cDropdown from "~/components/Inputs/cDropdown.vue";
 export default {
-	"components": {
-		cDropdown,
-		"Checkbox": defineAsyncComponent( () => import( "./Cells/CellCheckbox.vue" ) ),
-		"Title": defineAsyncComponent( () => import( "./Cells/CellTitle.vue" ) ),
-		"Date": defineAsyncComponent( () => import( "./Cells/CellDate.vue" ) ),
-		"Collaborators": defineAsyncComponent( () => import( "./Cells/CellCollaborators.vue" ) ),
-		"Price": defineAsyncComponent( () => import( "./Cells/CellPrice.vue" ) ),
-		"Status": defineAsyncComponent( () => import( "./Cells/CellStatus.vue" ) ),
-		"Tasks": defineAsyncComponent( () => import( "./Cells/CellTasks.vue" ) ),
-		"Progress": defineAsyncComponent( () => import( "./Cells/CellProgress.vue" ) ),
-		"Label": defineAsyncComponent( () => import( "./Cells/CellLabel.vue" ) ),
-		"Policy": defineAsyncComponent( () => import( "./Cells/CellPolicy.vue" ) )
-	},
+	"components": { "cDropdown": defineAsyncComponent( () => import( "~/components/Inputs/cDropdown.vue" ) ) },
 	"props": {
 		"columns": {
 			"type": Array,
@@ -59,12 +48,7 @@ export default {
 		},
 		"filters": {
 			"type": Array,
-			"default": () => [
-			]
-		},
-		"showSortIcon": {
-			"type": Boolean,
-			"default": true
+			"default": () => []
 		},
 		"searchable": Boolean
 	},
@@ -72,6 +56,8 @@ export default {
 		// filter and Search Documents
 		const searchQuery = ref( "" );
 		const activeFilters = ref({});
+
+		const getTableCell = cell => defineAsyncComponent( () => import( `./Cells/${cell}.vue` ) );
 
 		const activateFilter = ( title, field, key ) => {
 			activeFilters.value[title] = {
@@ -90,13 +76,14 @@ export default {
 
 				// filters (filter and mutate documents array)
 				const activeFiltersKeys = Object.keys( activeFilters.value ); // get filters (filter = dropdown element)
-				if ( activeFiltersKeys.length ) // if active filters exist
-					activeFiltersKeys.forEach( ( filterKey ) => { // filter documents (rows) by every existed filter
+				if ( activeFiltersKeys.length ) { // if active filters exist
+					activeFiltersKeys.forEach( filterKey => { // filter documents (rows) by every existed filter
 						const filterBy = activeFilters.value[filterKey].field; // get document's field (table cell) for filtering
 						const key = activeFilters.value[filterKey].key; // get filter's key (cell value) for filtering
 						if ( !key ) return; // do not filter if empty key (show all)
 						documents = documents.filter( document => document[filterBy] === key ); // filter documents by field/key
 					});
+				}
 
 				// search Query
 				if ( !searchQuery.value ) return documents;
@@ -111,13 +98,14 @@ export default {
 
 		// sort Documents
 		const sortAsc = ref({});
-		const sortDocuments = ( key ) => {
+		const sortDocuments = key => {
 			sortAsc.value[key] = !sortAsc.value[key];
 			sortArrayByKey( props.documents, key, sortAsc.value[key]);
 		};
 
 
 		return {
+			getTableCell,
 			sortDocuments,
 			searchQuery,
 			filteredDocuments,
@@ -133,15 +121,20 @@ export default {
 <style lang="stylus" scoped>
 .c-table
 	width: 100%
-	.filters
+	.controls
 		display: flex
 		align-items: center
-		gap: 2em
 		margin-bottom: 2em
+		gap: 2em
 		.search-input
 			flex: 1 1 auto
 			max-width: 25em
 			margin-right: auto
+		.actions
+			display: flex
+			align-items: center
+			gap: 1em
+
 
 .c-table table
 	font-size: 0.85em
@@ -150,7 +143,7 @@ export default {
 		border-bottom: 1px solid var(--c-border)
 		height: 4em
 		th, td
-			overflow: hidden
+			// overflow: hidden
 			text-overflow: ellipsis
 			white-space: nowrap
 	.cell

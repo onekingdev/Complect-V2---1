@@ -3,7 +3,8 @@
 	c-button(
 		:title="title"
 		:secondTitle="selected"
-		iconR="chevron-down")
+		:type="type"
+		:iconR="iconR")
 	.dropdown(v-show="listVisible")
 		slot(name="default")
 </template>
@@ -22,6 +23,16 @@ export default {
 		"selected": {
 			"type": String,
 			"default": "",
+			"required": false
+		},
+		"iconR": {
+			"type": String,
+			"default": "chevron-down",
+			"required": false
+		},
+		"type": {
+			"type": String,
+			"default": "default",
 			"required": false
 		}
 	},
