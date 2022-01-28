@@ -1,6 +1,6 @@
 "use strict";
 
-const CRDImport = require( "../module/CRDImport" );
+const CRDImport = require( "../modules/CRDImport" );
 const { readDocuments, createDocuments, updateDocument } = require( "../helpers/crud" );
 const { response, devStageLog } = require( "../helpers/utils" );
 const { sendEmail } = require( "../modules/sendEmail" );

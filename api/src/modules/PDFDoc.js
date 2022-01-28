@@ -1,8 +1,8 @@
 "use strict";
-
+const chromium = require( "chrome-aws-lambda" );
 const AWS = require( "aws-sdk" );
 const filesystem = require( "fs" );
-const puppeteer = require( "puppeteer" );
+// const puppeteer = require( "puppeteer" );
 const handlebars = require( "handlebars" );
 const util = require( "util" );
 const readFile = util.promisify( filesystem.readFile );
@@ -19,12 +19,14 @@ class PDFDoc {
 		const template = handlebars.compile( content );
 		const html = template( data );
 
-
-		const browser = await puppeteer.launch({
-			headless: true,
-			executablePath: process.env.CHROMIUM_PATH,
-			args: ["--disable-gpu",	"--disable-dev-shm-usage", "--disable-setuid-sandbox", "--no-sandbox"]
+		const browser = await chromium.puppeteer.launch({
+			args: ["--disable-gpu",	"--disable-dev-shm-usage", "--disable-setuid-sandbox", "--no-sandbox"],
+			defaultViewport: chromium.defaultViewport,
+			executablePath: await chromium.executablePath,
+			headless: chromium.headless,
+			ignoreHTTPSErrors: true
 		});
+
 		const page = await browser.newPage();
 		await page.setContent( html );
 
