@@ -28,7 +28,7 @@ export default {
 		};
 
 		const handleClickDuplicate = async id => {
-    	const index = documents.value.findIndex( doc => doc._id === id );
+			const index = documents.value.findIndex( doc => doc._id === id );
 			await createDocuments([documents.value[index]]);
 			notification({
 				"type": "success",
