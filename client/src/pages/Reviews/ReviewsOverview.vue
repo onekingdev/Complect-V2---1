@@ -25,15 +25,17 @@ export default {
 				"name": "ReviewDetail",
 				"params": { "id": id }
 			});
-		}
-		const handleClickDuplicate = async (id) => {
+		};
+
+		const handleClickDuplicate = async ( id ) => {
 			const index = documents.value.findIndex( doc => doc._id === id );
 			await createDocuments([documents.value[index]]);
 			notification({
 				"type": "success",
 				"title": "Internal review has been duplicated."
 			});
-		}
+		};
+
 		const handleClickDelete = id => deleteDocuments( id );
 
 		const columns = [
@@ -80,9 +82,7 @@ export default {
 				"width": "35px",
 				"meta": {
 					"actions": [
-						{ "title": "Edit", "action": handleClickEdit },
-						{ "title": "Duplicate", "action": handleClickDuplicate },
-						{ "title": "Delete", "action": handleClickDelete }
+						{ "title": "Edit", "action": handleClickEdit }, { "title": "Duplicate", "action": handleClickDuplicate }, { "title": "Delete", "action": handleClickDelete }
 					]
 				}
 			}
