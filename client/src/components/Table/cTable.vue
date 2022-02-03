@@ -14,7 +14,7 @@
 				col(v-for="(column, index) in columns" :class="[column.cell]" :key="index")
 			thead
 				tr
-					th(v-for="(column, index) in columns" :key="index")
+					th(v-for="(column, index) in columns" :key="index" v-bind:width="[column.width]")
 						.cell.column-title(:class="[column.align]")
 							.title(v-if="column.title") {{ column.title }}
 							c-button(v-if="!column.unsortable" type="icon" iconR="sort" @click="sortDocuments(column.key)")
@@ -139,8 +139,6 @@ export default {
 			align-items: center
 			gap: 1em
 
-.c-table .container
-	overflow-x: scroll
 .c-table table
 	font-size: 0.85em
 	width: 100%

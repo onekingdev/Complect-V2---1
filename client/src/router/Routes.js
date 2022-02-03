@@ -219,7 +219,7 @@ const routes = [
 						]
 					},
 					{
-						"path": "reviews",
+						"path": "internal_reviews",
 						"component": _ReviewsEntry,
 						"children": [{
 							"path": "",
@@ -229,7 +229,7 @@ const routes = [
 						}]
 					},
 					{
-						"path": "review/:id",
+						"path": "internal_review/:id",
 						"component": _ReviewEntry,
 						"meta": {
 							"title": "Review",
