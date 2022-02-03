@@ -9,8 +9,7 @@ c-table(v-bind="{columns, documents}")
 
 
 <script>
-import { onMounted, onUnmounted } from "vue";
-import { inject } from "vue";
+import { onMounted, onUnmounted, inject } from "vue";
 import useData from "~/store/Data.js";
 import { useRouter } from "vue-router";
 import cBanner from "~/components/Misc/cBanner.vue";
